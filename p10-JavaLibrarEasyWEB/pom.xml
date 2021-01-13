@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.emmanuel.plumas</groupId>
-	<artifactId>p7JavaLibrarEasyWEB</artifactId>
-	<version>1</version>
-	<name>p7JavaLibrarEasyWEB</name>
-	<description>Projet DA JAVA P7 OC APPLI WEB</description>
+	<artifactId>p10JavaLibrarEasyWEB</artifactId>
+	<version>1.0.0-Release</version>
+	<name>p10JavaLibrarEasyWEB</name>
+	<description>Projet DA JAVA P10 OC APPLI WEB</description>
 
 	<properties>
 		<java.version>1.8</java.version>
