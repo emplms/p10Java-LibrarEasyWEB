@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.emmanuel.plumas</groupId>
 	<artifactId>p10JavaLibrarEasy-Batch</artifactId>
-	<version>1.0.0-Release</version>
+	<version>1.0.1-Snapshot</version>
 	<name>p10JavaLibrarEasy-Batch</name>
 	<description>Projet DA JAVA P10 Batch</description>
 
