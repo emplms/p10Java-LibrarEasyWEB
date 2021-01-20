@@ -26,12 +26,16 @@
 				</div>
 				<div class="col-md-4">							
 					<div class="card">
-						<div class="card-header text-info">Pour vos emprunts, c'est ici !</div>
+						<div class="card-header text-info">Emprunts et réservations</div>
 							<div class="card-body">
 								<h5 class="card-title">Emprunts</h5>
 								<ul class="list-group">
 									<li class="list-group-item"><a th:href="@{http://localhost:8080/borrowByUserLastName}">Liste des emprunts de l'utilisateur</a></li>
 								</ul>
+								<h5 class="card-title">Réservations</h5>
+								<ul class="list-group">
+									<li class="list-group-item"><a th:href="@{http://localhost:8080/reservationByUserLastName}">Liste des réservations en cours</a></li>
+								</ul>	
 							</div>
 					</div>
 				</div>
