@@ -46,4 +46,15 @@ public class BorrowService {
 	public void extendBorrow(Long borrowId) {
 		apiProxy.setExtendBorrow(borrowId);
 	}
+	
+	public List<BorrowEntity> getBorrowByBookId(Long bookId){
+		List<BorrowEntity> borrowByBookIdEntities=new ArrayList<BorrowEntity>();
+		List<BorrowEntity> borrowEntities=apiProxy.getAllBorrows();
+		for (BorrowEntity borrowEntity : borrowEntities) {
+			if(borrowEntity.getCopyEntity().getBookEntity().getBookId().equals(bookId)) {
+				borrowByBookIdEntities.add(borrowEntity);
+			}
+		}
+		return borrowByBookIdEntities;
+	}
 }

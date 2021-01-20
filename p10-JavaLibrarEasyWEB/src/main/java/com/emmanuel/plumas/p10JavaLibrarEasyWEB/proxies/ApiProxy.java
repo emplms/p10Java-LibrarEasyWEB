@@ -33,9 +33,13 @@ public interface ApiProxy {
 	@GetMapping(value="borrow/extendBorrow/{borrowId}")
 	public void setExtendBorrow(@PathVariable Long borrowId);
 	
+	@GetMapping(value="borrows")
+	public List<BorrowEntity> getAllBorrows();
+	
 	@GetMapping(value="reservations/reservationsByUser/{userLastName}")
 	List<ReservationEntity> getReservationByUserLastName(@PathVariable String userLastName);
 	
 	@GetMapping(value="reservations/reservationsByBook/{bookId}")
 	List<ReservationEntity> getReservationByBookId(@PathVariable Long bookId);
+
 }

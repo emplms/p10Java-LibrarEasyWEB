@@ -10,8 +10,19 @@ public class ReservationEntity {
 	private BookEntity bookEntity;
 	private UserEntity userEntity;
 	private int positionListeAttente;
+	private Date dateProchainRetour;
 	
 	
+	
+	
+	public Date getDateProchainRetour() {
+		return dateProchainRetour;
+	}
+
+	public void setDateProchainRetour(Date dateProchainRetour) {
+		this.dateProchainRetour = dateProchainRetour;
+	}
+
 	public int getPositionListeAttente() {
 		return positionListeAttente;
 	}
@@ -54,10 +65,14 @@ public class ReservationEntity {
 	public void setUserEntity(UserEntity userEntity) {
 		this.userEntity = userEntity;
 	}
+	
+	
+	
 	@Override
 	public String toString() {
 		return "ReservationEntity [reservationId=" + reservationId + ", position=" + position + ", reservationDate="
-				+ reservationDate + ", bookEntity=" + bookEntity + ", userEntity=" + userEntity + "]";
+				+ reservationDate + ", bookEntity=" + bookEntity + ", userEntity=" + userEntity
+				+ ", positionListeAttente=" + positionListeAttente + ", dateProchainRetour=" + dateProchainRetour + "]";
 	}
 	
 	
