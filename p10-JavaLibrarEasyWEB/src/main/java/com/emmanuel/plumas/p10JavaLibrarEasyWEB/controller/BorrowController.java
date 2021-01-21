@@ -1,5 +1,6 @@
 package com.emmanuel.plumas.p10JavaLibrarEasyWEB.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +25,11 @@ public class BorrowController extends CommonController{
 		String userLastName=getPrincipal();
 		List<BorrowEntity> oldBorrowEntities=borrowService.getOldBorrowByUserLastName(userLastName);
 		List<BorrowEntity> currentBorrowEntities=borrowService.getCurrentBorrowByUserLastName(userLastName);
-		
+		Date today=new Date();
 		model.addAttribute("oldBorrowEntities", oldBorrowEntities);
 		model.addAttribute("currentBorrowEntities", currentBorrowEntities);
 		model.addAttribute("principal",userLastName);
+		model.addAttribute("today",today);
 		return "borrowByUserLastName";
 	}
 	

@@ -45,11 +45,16 @@ public class BorrowService {
 	public void extendBorrowEndDate(Long borrowId) {
 		BorrowEntity borrowEntity=borrowRepository.getBorrowByBorrowId(borrowId);
 		Calendar cal=Calendar.getInstance();
-		cal.setTime(borrowEntity.getEndDate());
+		cal.setTime(borrowEntity.getStartDate());
 		cal.add(Calendar.MONTH, 1);
-		borrowEntity.setEndDate(cal.getTime());
-		borrowEntity.setIsExtended(true);
-		borrowRepository.save(borrowEntity);
+		Date today=new Date();
+		if (cal.getTime().after(today)) { 
+			cal.setTime(borrowEntity.getEndDate());
+			cal.add(Calendar.MONTH, 1);
+			borrowEntity.setEndDate(cal.getTime());
+			borrowEntity.setIsExtended(true);
+			borrowRepository.save(borrowEntity);
+		}
 	}
 
 
