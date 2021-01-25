@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.emmanuel.plumas.p10JavaLibrarEasyApi.model.ReservationEntity;
+import com.emmanuel.plumas.p10JavaLibrarEasyApi.model.ReservationWithWaitingListEntity;
 import com.emmanuel.plumas.p10JavaLibrarEasyApi.service.ReservationService;
 
 @RestController
@@ -19,8 +20,8 @@ public class ReservationController {
 	private ReservationService reservationService;
 	
 	@GetMapping(value="reservations/reservationsByUser/{userLastName}")
-	List<ReservationEntity> getReservationByUserLastName(@PathVariable String userLastName){
-		List<ReservationEntity> reservationByUserLastNameEntities=reservationService.getReservationByUserLastName(userLastName);
+	List<ReservationWithWaitingListEntity> getReservationByUserLastName(@PathVariable String userLastName){
+		List<ReservationWithWaitingListEntity> reservationByUserLastNameEntities=reservationService.getReservationByUserLastName(userLastName);
 		return reservationByUserLastNameEntities;
 		}
 	

@@ -11,6 +11,7 @@ import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.BookEntity;
 import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.BookEntityAvailable;
 import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.BorrowEntity;
 import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.ReservationEntity;
+import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.ReservationWithWaitingListEntity;
 import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.UserEntity;
 
 
@@ -37,7 +38,7 @@ public interface ApiProxy {
 	public List<BorrowEntity> getAllBorrows();
 	
 	@GetMapping(value="reservations/reservationsByUser/{userLastName}")
-	List<ReservationEntity> getReservationByUserLastName(@PathVariable String userLastName);
+	List<ReservationWithWaitingListEntity> getReservationByUserLastName(@PathVariable String userLastName);
 	
 	@GetMapping(value="reservations/reservationsByBook/{bookId}")
 	List<ReservationEntity> getReservationByBookId(@PathVariable Long bookId);

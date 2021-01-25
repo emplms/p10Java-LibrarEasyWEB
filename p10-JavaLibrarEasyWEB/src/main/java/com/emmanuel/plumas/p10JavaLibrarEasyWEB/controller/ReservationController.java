@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.ReservationEntity;
+import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.ReservationWithWaitingListEntity;
 import com.emmanuel.plumas.p10JavaLibrarEasyWEB.services.ReservationService;
 
 @Controller
@@ -21,7 +21,7 @@ public class ReservationController extends CommonController{
 	@GetMapping(value="/reservationByUserLastName")
 	public String getReservationByUserLastName(Model model) {
 		String userLastName=getPrincipal();
-		List<ReservationEntity> reservationByUserLastNameEntities=reservationService.getReservationByUserLastName(userLastName);
+		List<ReservationWithWaitingListEntity> reservationByUserLastNameEntities=reservationService.getReservationByUserLastName(userLastName);
 		model.addAttribute("principal", userLastName);
 		model.addAttribute("reservationByUserLastNameEntities",reservationByUserLastNameEntities);
 		return "reservationByUserLastName";

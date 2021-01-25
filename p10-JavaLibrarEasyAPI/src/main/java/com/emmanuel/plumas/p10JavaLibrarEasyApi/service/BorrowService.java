@@ -89,4 +89,16 @@ public class BorrowService {
 	public void deleteBorrow(Long borrowId) {
 		borrowRepository.deleteByBorrowId(borrowId);
 	}
+	
+	
+	public List<BorrowEntity> getBorrowByBookId(Long bookId){
+		List <BorrowEntity> borrowEntities=getAllBorrows();
+		List<BorrowEntity> borrowByBookIdEntities=new ArrayList<>();
+		for (BorrowEntity borrowEntity :borrowEntities) {
+			if(borrowEntity.getCopyEntity().getBookEntity().getBookId().equals(bookId)) {
+				borrowByBookIdEntities.add(borrowEntity);
+			}
+		}
+		return borrowByBookIdEntities;
+	}
 }

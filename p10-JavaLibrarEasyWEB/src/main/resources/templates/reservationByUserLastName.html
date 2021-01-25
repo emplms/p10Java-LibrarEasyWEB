@@ -75,8 +75,8 @@
 							        <td th:text="${reservation.bookEntity.bookTitle }"></td>
 							        <td th:text="${reservation.bookEntity.authorEntity.authorLastName}"></td>
 							        <td th:text="${reservation.bookEntity.authorEntity.authorFirstName}"></td>
-							        <td th:text="${#dates.format(reservation.dateProchainRetour,'dd-MM-yyyy')}"></td>
-							        <td th:text="${reservation.positionListeAttente}"></td>
+							        <td th:text="${#dates.format(reservation.dateNextReturn,'dd-MM-yyyy')}"></td>
+							        <td th:text="${reservation.positionWaitingList}"></td>
 							     </tr>
 						     </tbody>
 			    		</table>
