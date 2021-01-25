@@ -20,7 +20,7 @@ public class AuthorService {
 	@Qualifier("IAuthorRepository")
 	private IAuthorRepository authorRepository;
 	
-	public List<AuthorEntity> getAllBooks(){
+	public List<AuthorEntity> getAllAuthors(){
 		List <AuthorEntity> authorEntities=(List<AuthorEntity>) authorRepository.findAll();
 		return authorEntities;
 	}
