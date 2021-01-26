@@ -89,10 +89,6 @@ public class ReservationService {
 		return dateProchainRetour;
 	}
 	
-	
-	
-	
-	//Vérifier si cette méthode est utile
 	public List<ReservationEntity> getReservationByBookId(Long bookId) {
 		BookEntity bookEntity=bookService.getBookById(bookId);
 		List<ReservationEntity> reservationByBookEntities=reservationRepository.getReservationByBookEntity(bookEntity);
