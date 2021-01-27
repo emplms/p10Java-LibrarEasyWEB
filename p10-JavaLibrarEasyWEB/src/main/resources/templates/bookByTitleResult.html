@@ -61,6 +61,8 @@
 				       			<th>Nom de l'Auteur</th>
 				       			<th>Prénom de l'auteur</th>
 			        			<th>Nombre d'exemplaires disponibles</th>
+			        			<th>Date du prochain retour</th>
+			        			<th>Nombre de réservations</th>
 				     		</tr>
 			     		</thead>
 			     		<tbody>
@@ -71,6 +73,11 @@
 						        <td th:text="${book.authorEntity.authorLastName}"></td>
 						        <td th:text="${book.authorEntity.authorFirstName}"></td>
 						        <td th:text="${book.availableCopyNumber}"></td>
+								<td>En attente de développement</td>
+								<!-- 						       
+						        <td th:text="${#dates.format(book.reservationEntities.dateNextReturn,'dd-MM-yyyy')}"></td>
+						         -->
+						        <td th:text="${#lists.size(book.reservationEntities)}"></td>
 						     </tr>
 					     </tbody>
 		    		</table>

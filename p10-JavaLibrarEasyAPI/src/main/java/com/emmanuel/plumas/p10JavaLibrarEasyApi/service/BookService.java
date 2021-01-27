@@ -74,6 +74,7 @@ public class BookService {
 			bookEntityAvailable.setEditor(bookEntity.getEditor());
 			bookEntityAvailable.setBookType(bookEntity.getBookType());
 			bookEntityAvailable.setAuthorEntity(bookEntity.getAuthorEntity());
+			bookEntityAvailable.setReservationEntities(bookEntity.getReservationEntities());
 			bookEntityAvailable.setAvailableCopyNumber(copyService.getCopyNumberAvailableByBookEntity(bookEntity));
 			bookEntitiesAvailable.add(bookEntityAvailable);
 			}

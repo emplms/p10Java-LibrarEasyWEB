@@ -1,5 +1,6 @@
 package com.emmanuel.plumas.p10JavaLibrarEasyApi.model;
 
+import java.util.List;
 
 public class BookEntityAvailable {
 	private Long bookId;
@@ -7,6 +8,7 @@ public class BookEntityAvailable {
 	private String editor;
 	private String bookType;
 	private AuthorEntity authorEntity;
+	private List<ReservationEntity> reservationEntities;
 	private int availableCopyNumber;
 	
 	
@@ -54,6 +56,15 @@ public class BookEntityAvailable {
 		this.authorEntity = authorEntity;
 	}
 
+
+	public List<ReservationEntity> getReservationEntities() {
+		return reservationEntities;
+	}
+
+	public void setReservationEntities(List<ReservationEntity> reservationEntities) {
+		this.reservationEntities = reservationEntities;
+	}
+
 	public int getAvailableCopyNumber() {
 		return availableCopyNumber;
 	}
@@ -65,7 +76,7 @@ public class BookEntityAvailable {
 	@Override
 	public String toString() {
 		return "BookEntityAvailable [bookId=" + bookId + ", bookTitle=" + bookTitle + ", editor=" + editor
-				+ ", bookType=" + bookType + ", authorEntity=" + authorEntity + ", availableCopyNumber="
-				+ availableCopyNumber + "]";
+				+ ", bookType=" + bookType + ", authorEntity=" + authorEntity + ", reservationEntities="
+				+ reservationEntities + ", availableCopyNumber=" + availableCopyNumber + "]";
 	}	
 }

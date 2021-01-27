@@ -1,5 +1,6 @@
 package com.emmanuel.plumas.p10JavaLibrarEasyWEB.model;
 
+import java.util.List;
 
 public class BookEntity {
 	
@@ -8,6 +9,7 @@ public class BookEntity {
 	private String editor;
 	private String bookType;
 	private AuthorEntity authorEntity;
+	private List<ReservationEntity> reservationEntities;
 	
 	public BookEntity() {
 		super();
@@ -53,9 +55,17 @@ public class BookEntity {
 		this.authorEntity = authorEntity;
 	}
 
+	public List<ReservationEntity> getReservationEntities() {
+		return reservationEntities;
+	}
+
+	public void setReservationEntities(List<ReservationEntity> reservationEntities) {
+		this.reservationEntities = reservationEntities;
+	}
+
 	@Override
 	public String toString() {
 		return "BookEntity [bookId=" + bookId + ", bookTitle=" + bookTitle + ", editor=" + editor + ", bookType="
-				+ bookType + "]";
+				+ bookType + ", authorEntity=" + authorEntity + ", reservationEntities=" + reservationEntities + "]";
 	}	
 }
