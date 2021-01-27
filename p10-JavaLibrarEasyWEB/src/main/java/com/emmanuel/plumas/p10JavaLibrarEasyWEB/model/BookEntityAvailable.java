@@ -9,7 +9,7 @@ public class BookEntityAvailable {
 	private String editor;
 	private String bookType;
 	private AuthorEntity authorEntity;
-	private List<ReservationEntity> reservationEntities;
+	private List<ReservationWithWaitingListEntity> reservationWithWaitingListEntities;
 	private int availableCopyNumber;
 	
 	
@@ -51,13 +51,13 @@ public class BookEntityAvailable {
 	
 	
 
-	public List<ReservationEntity> getReservationEntities() {
-		return reservationEntities;
+	public List<ReservationWithWaitingListEntity> getReservationWithWaitingListEntities() {
+		return reservationWithWaitingListEntities;
 	}
 
-	public void setReservationEntities(
-			List<ReservationEntity> reservationEntities) {
-		this.reservationEntities = reservationEntities;
+	public void setReservationWithWaitingListEntities(
+			List<ReservationWithWaitingListEntity> reservationWithWaitingListEntities) {
+		this.reservationWithWaitingListEntities = reservationWithWaitingListEntities;
 	}
 
 	public AuthorEntity getAuthorEntity() {
@@ -79,7 +79,7 @@ public class BookEntityAvailable {
 	@Override
 	public String toString() {
 		return "BookEntityAvailable [bookId=" + bookId + ", bookTitle=" + bookTitle + ", editor=" + editor
-				+ ", bookType=" + bookType + ", authorEntity=" + authorEntity + ", reservationEntities="
-				+ reservationEntities + ", availableCopyNumber=" + availableCopyNumber + "]";
+				+ ", bookType=" + bookType + ", authorEntity=" + authorEntity + ", reservationWithWaitingListEntities="
+				+ reservationWithWaitingListEntities + ", availableCopyNumber=" + availableCopyNumber + "]";
 	}	
 }

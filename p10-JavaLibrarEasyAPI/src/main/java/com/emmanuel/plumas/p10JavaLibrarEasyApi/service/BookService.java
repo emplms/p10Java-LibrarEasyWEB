@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.emmanuel.plumas.p10JavaLibrarEasyApi.model.BookEntity;
 import com.emmanuel.plumas.p10JavaLibrarEasyApi.model.BookEntityAvailable;
+import com.emmanuel.plumas.p10JavaLibrarEasyApi.model.ReservationWithWaitingListEntity;
 import com.emmanuel.plumas.p10JavaLibrarEasyApi.repository.IBookRepository;
 
 @Service
@@ -29,6 +30,10 @@ public class BookService {
 	@Autowired
 	@Qualifier("BorrowService")
 	private BorrowService borrowService;
+	
+	@Autowired
+	@Qualifier("ReservationService")
+	private ReservationService reservationService;
 	
 	public BookEntity getBookById(Long bookId) {
 		BookEntity bookEntity=bookRepository.findByBookId(bookId);
@@ -74,7 +79,17 @@ public class BookService {
 			bookEntityAvailable.setEditor(bookEntity.getEditor());
 			bookEntityAvailable.setBookType(bookEntity.getBookType());
 			bookEntityAvailable.setAuthorEntity(bookEntity.getAuthorEntity());
-			bookEntityAvailable.setReservationEntities(bookEntity.getReservationEntities());
+			//Récupérér les ReservationEntity et les Transformer en reservation avec liste d'attente
+			List<ReservationWithWaitingListEntity> reservationWithWaitingListEntities=reservationService.transformReservationEntitiesToReservationWithWaitingListEntities(bookEntity.getReservationEntities());
+			
+			//pour chaque reservation ajouté la position sur la liste d'attente et la date de prochain retour
+			for(ReservationWithWaitingListEntity reservationWithWaitingListEntity : reservationWithWaitingListEntities) {
+				reservationWithWaitingListEntity.setDateNextReturn(reservationService.calculateNextReturnDate(bookEntity.getBookId()));
+			}
+			
+			//Mettre à jour la list de le bookEntityAvalaible
+			bookEntityAvailable.setReservationWithWaitingListEntities(reservationWithWaitingListEntities);
+
 			bookEntityAvailable.setAvailableCopyNumber(copyService.getCopyNumberAvailableByBookEntity(bookEntity));
 			bookEntitiesAvailable.add(bookEntityAvailable);
 			}

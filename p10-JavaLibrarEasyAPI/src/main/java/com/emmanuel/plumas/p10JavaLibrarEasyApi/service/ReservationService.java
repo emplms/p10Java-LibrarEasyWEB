@@ -47,7 +47,7 @@ public class ReservationService {
 		return reservationWithWaitingListByUserLastNameEntities;
 	}
 
-	private List<ReservationWithWaitingListEntity> transformReservationEntitiesToReservationWithWaitingListEntities(List<ReservationEntity> reservationEntities){
+	public List<ReservationWithWaitingListEntity> transformReservationEntitiesToReservationWithWaitingListEntities(List<ReservationEntity> reservationEntities){
 		List<ReservationWithWaitingListEntity> reservationWithWaitingListEntities=new ArrayList<ReservationWithWaitingListEntity>();
 		for (int i=0;i<(reservationEntities.size());i++) {
 			ReservationWithWaitingListEntity reservationWithWaitingListEntity= new ReservationWithWaitingListEntity();
@@ -62,7 +62,7 @@ public class ReservationService {
 		return reservationWithWaitingListEntities;
 	}
 	
-	private int calculatePositionWaitingList(BookEntity bookEntity, int position, String userLastName) {
+	public int calculatePositionWaitingList(BookEntity bookEntity, int position, String userLastName) {
 		int positionListeAttente=1;
 		List<ReservationEntity> reservationEntities=reservationRepository.getReservationByBookEntity(bookEntity);
 		for (ReservationEntity reservationEntity : reservationEntities) {
@@ -76,7 +76,7 @@ public class ReservationService {
 	}
 	
 	
-	private Date calculateNextReturnDate(Long bookId) {	
+	public Date calculateNextReturnDate(Long bookId) {	
 		Calendar cal=Calendar.getInstance();
 		cal.add(Calendar.MONTH, 1);
 		Date dateProchainRetour = cal.getTime();
