@@ -7,7 +7,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.BookEntity;
 import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.BookEntityAvailable;
 import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.BorrowEntity;
 import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.ReservationEntity;
@@ -20,7 +19,7 @@ import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.UserEntity;
 public interface ApiProxy {
 	
 	@GetMapping(value="books")
-	List<BookEntity> getAllBooks();
+	List<BookEntityAvailable> getAllBooks();
 	
 	@GetMapping(value="book/{bookTitle}")
 	List<BookEntityAvailable> getBooksByTitle(@PathVariable String bookTitle);

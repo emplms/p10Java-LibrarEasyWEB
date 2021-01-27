@@ -40,9 +40,10 @@ public class BookService {
 		return bookEntity;
 	}
 	
-	public List<BookEntity> getAllBooks(){
+	public List<BookEntityAvailable> getAllBooks(){
 		List<BookEntity> bookEntities=(List<BookEntity>) bookRepository.findAll();
-		return bookEntities;
+		List<BookEntityAvailable> bookEntitiesAvailable= transformBookEntityToAvailable(bookEntities);
+		return bookEntitiesAvailable;
 	}
 
 	public List<BookEntityAvailable> getsBookByTitleAvalaibale(String bookTitle) {

@@ -26,7 +26,7 @@ public class BookController extends CommonController{
 	
 	@GetMapping(value="/books")
 	public String getBooks(Model model) {	
-		List<BookEntity> bookEntities=bookService.getAllBooks();
+		List<BookEntityAvailable> bookEntities=bookService.getAllBooks();
 		model.addAttribute("bookEntities", bookEntities);
 		return "books";
 	}

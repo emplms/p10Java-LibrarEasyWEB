@@ -28,8 +28,8 @@ public class BookController {
 	}
 	
 	@GetMapping(value="books")
-	public List<BookEntity> getAllBooks(){
-		List<BookEntity> bookEntities=bookService.getAllBooks();
+	public List<BookEntityAvailable> getAllBooks(){
+		List<BookEntityAvailable> bookEntities=bookService.getAllBooks();
 		return bookEntities;
 	}
 	

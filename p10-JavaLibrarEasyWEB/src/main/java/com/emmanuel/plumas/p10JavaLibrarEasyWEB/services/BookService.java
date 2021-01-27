@@ -14,7 +14,7 @@ public class BookService {
 	@Autowired
 	private ApiProxy apiProxy;
 	
-	public List<BookEntity> getAllBooks(){
+	public List<BookEntityAvailable> getAllBooks(){
 		return apiProxy.getAllBooks();
 	}
 
