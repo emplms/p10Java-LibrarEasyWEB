@@ -5,6 +5,8 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -81,12 +83,9 @@ public class BookService {
 			bookEntityAvailable.setBookType(bookEntity.getBookType());
 			bookEntityAvailable.setAuthorEntity(bookEntity.getAuthorEntity());
 			//Récupérér les ReservationEntity et les Transformer en reservation avec liste d'attente
-			List<ReservationWithWaitingListEntity> reservationWithWaitingListEntities=reservationService.transformReservationEntitiesToReservationWithWaitingListEntities(bookEntity.getReservationEntities());
-			
-			//pour chaque reservation ajouté la position sur la liste d'attente et la date de prochain retour
-			for(ReservationWithWaitingListEntity reservationWithWaitingListEntity : reservationWithWaitingListEntities) {
-				reservationWithWaitingListEntity.setDateNextReturn(reservationService.calculateNextReturnDate(bookEntity.getBookId()));
-			}
+			Date dateNextReturn=reservationService.calculateNextReturnDate(bookEntity.getBookId());
+
+			List<ReservationWithWaitingListEntity> reservationWithWaitingListEntities=reservationService.transformReservationEntitiesToReservationWithWaitingListEntities(bookEntity.getReservationEntities(),dateNextReturn);
 			
 			//Mettre à jour la list de le bookEntityAvalaible
 			bookEntityAvailable.setReservationWithWaitingListEntities(reservationWithWaitingListEntities);

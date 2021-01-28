@@ -39,7 +39,7 @@ public class ReservationService {
 	public List<ReservationWithWaitingListEntity> getReservationByUserLastName(String userLastName){
 		UserEntity userEntity=userService.getUserByUserLastName(userLastName);
 		List<ReservationEntity> reservationByUserLastNameEntities=reservationRepository.getReservationByUserEntity(userEntity); 		
-		List<ReservationWithWaitingListEntity> reservationWithWaitingListByUserLastNameEntities=transformReservationEntitiesToReservationWithWaitingListEntities(reservationByUserLastNameEntities);
+		List<ReservationWithWaitingListEntity> reservationWithWaitingListByUserLastNameEntities=transformReservationEntitiesToReservationWithWaitingListEntities(reservationByUserLastNameEntities,null);
 		for(ReservationWithWaitingListEntity reservationWithWaitingListEntity:reservationWithWaitingListByUserLastNameEntities) {
 			reservationWithWaitingListEntity.setPositionWaitingList(calculatePositionWaitingList(reservationWithWaitingListEntity.getBookEntity(),reservationWithWaitingListEntity.getPosition(),userLastName));
 			reservationWithWaitingListEntity.setDateNextReturn((calculateNextReturnDate(reservationWithWaitingListEntity.getBookEntity().getBookId())));
@@ -47,7 +47,7 @@ public class ReservationService {
 		return reservationWithWaitingListByUserLastNameEntities;
 	}
 
-	public List<ReservationWithWaitingListEntity> transformReservationEntitiesToReservationWithWaitingListEntities(List<ReservationEntity> reservationEntities){
+	public List<ReservationWithWaitingListEntity> transformReservationEntitiesToReservationWithWaitingListEntities(List<ReservationEntity> reservationEntities,Date dateNextReturn){
 		List<ReservationWithWaitingListEntity> reservationWithWaitingListEntities=new ArrayList<ReservationWithWaitingListEntity>();
 		for (int i=0;i<(reservationEntities.size());i++) {
 			ReservationWithWaitingListEntity reservationWithWaitingListEntity= new ReservationWithWaitingListEntity();
@@ -57,6 +57,7 @@ public class ReservationService {
 			reservationWithWaitingListEntity.setnotificationDate(reservationEntity.getNotificationDate());
 			reservationWithWaitingListEntity.setBookEntity(reservationEntity.getBookEntity());
 			reservationWithWaitingListEntity.setUserEntity(reservationEntity.getUserEntity());
+			reservationWithWaitingListEntity.setDateNextReturn(dateNextReturn);
 			reservationWithWaitingListEntities.add(reservationWithWaitingListEntity);
 		}
 		return reservationWithWaitingListEntities;
