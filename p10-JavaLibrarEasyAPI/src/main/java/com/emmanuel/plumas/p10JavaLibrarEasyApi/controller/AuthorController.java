@@ -22,7 +22,7 @@ public class AuthorController {
 	
 	@GetMapping(value="authors")
 	public List<AuthorEntity> getAllAuthors() {
-		List<AuthorEntity> authorEntities=authorService.getAllBooks();
+		List<AuthorEntity> authorEntities=authorService.getAllAuthors();
 		return authorEntities;
 	}
 	

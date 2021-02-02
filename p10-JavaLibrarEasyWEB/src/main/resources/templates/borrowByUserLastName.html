@@ -59,7 +59,7 @@
 			<!--  Prêts en cours -->
 			<div class="row">
 				<div class="col text-info">
-					<h4 >Liste des prêts en cours</h3>
+					<h4 >Liste des prêts en cours</h4>
 				</div>
 			</div>
 			<div class="row">
@@ -88,7 +88,7 @@
 							        <td th:text="${borrow.copyEntity.bookEntity.authorEntity.authorFirstName}"></td>
 							        <td th:text="${borrow.copyEntity.bookEntity.bookType}"></td>
 							        <td th:text="${borrow.copyEntity.bookEntity.editor}"></td>
-							        <td th:if="${borrow.isExtended==false}">
+							        <td th:if="${borrow.isExtended==false and borrow.endDate>today}">
 							        	<a th:href="@{/borrow/extendBorrow/{borrowId}(borrowId=${borrow.borrowId})}">Prolonger</a>
 							        </td>
 							        <td th:if="${borrow.isExtended==true}">Effectuée</td>
