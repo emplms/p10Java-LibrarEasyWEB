@@ -28,6 +28,9 @@ public class ReservationService {
 
 	public void createReservation(Long bookId,String userLastName) {
 		apiProxy.createReservation(bookId,userLastName);
-		
+	}
+	
+	public void deleteReservation(Long reservationId) {
+		apiProxy.deleteReservation(reservationId);
 	}
 }

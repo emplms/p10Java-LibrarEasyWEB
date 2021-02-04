@@ -35,5 +35,10 @@ public class ReservationController {
 	public void createReservation(@PathVariable Long bookId, @PathVariable String userLastName) {
 		reservationService.createReservation(userLastName,bookId);
 	}
+	
+	@GetMapping(value="deleteReservation/{reservationId}")
+	public void deleteReservation(@PathVariable Long reservationId) {
+		reservationService.deleteReservation(reservationId);
+	}
 }
 

@@ -34,4 +34,10 @@ public class ReservationController extends CommonController{
 		reservationService.createReservation(bookId,userLastName);
 		return "redirect:/reservationByUserLastName";
 	}
+	
+	@GetMapping(value="/deleteReservation/{reservationId}")
+	public String deleteReservation(@PathVariable Long reservationId) {
+		reservationService.deleteReservation(reservationId);
+		return "redirect:/reservationByUserLastName";
+	}
 }

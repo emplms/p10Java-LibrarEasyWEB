@@ -166,4 +166,9 @@ public class ReservationService {
 		}
 		return bookIsAvailable;
 	}
+
+	public void deleteReservation(Long reservationId) {
+		reservationRepository.deleteById(reservationId);;
+		
+	}
 }

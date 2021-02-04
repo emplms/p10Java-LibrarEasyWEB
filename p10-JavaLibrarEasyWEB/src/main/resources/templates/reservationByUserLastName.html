@@ -71,6 +71,7 @@
 				        			<th>Prénom de l'auteur</th>
 				        			<th>Prochaine date de retour</th>
 				        			<th>Votre position dans la liste d'attente</th>
+				        			<th>Suppression de réservation</th>
 				     			</tr>
 			     			</thead>
 			     			<tbody>
@@ -80,6 +81,7 @@
 							        <td th:text="${reservation.bookEntity.authorEntity.authorFirstName}"></td>
 							        <td th:text="${#dates.format(reservation.dateNextReturn,'dd-MM-yyyy')}"></td>
 							        <td th:text="${reservation.positionWaitingList}"></td>
+							        <td><a th:href="@{http://localhost:8080/deleteReservation/{reservationId}(reservationId=${reservation.reservationId})}">supprimer la réservation</a></td>
 							     </tr>
 						     </tbody>
 			    		</table>

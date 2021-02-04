@@ -45,5 +45,6 @@ public interface ApiProxy {
 	@GetMapping(value="reservations/createReservation/{bookId}/{userLastName}")
 	public void createReservation(@PathVariable Long bookId,@PathVariable String userLastName);
 	
-
+	@GetMapping(value="deleteReservation/{reservationId}")
+	public void deleteReservation(@PathVariable Long reservationId);
 }
