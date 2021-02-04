@@ -45,6 +45,12 @@ public class CopyService {
 	}
 	
 	
+	public int getExistingCopyNumberByBookId(BookEntity bookEntity) {
+		List<CopyEntity> copyList= copyRepository.findByBookEntity(bookEntity);
+		int existingCopyNumber=copyList.size();
+		return existingCopyNumber;
+	}
+	
 	public List<CopyEntity> getAllCopyEntities(){
 		List<CopyEntity> copyEntities=(List<CopyEntity>) copyRepository.findAll();
 		return copyEntities;

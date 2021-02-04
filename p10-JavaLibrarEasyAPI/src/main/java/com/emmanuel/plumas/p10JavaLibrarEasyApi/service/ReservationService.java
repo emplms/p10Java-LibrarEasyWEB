@@ -36,6 +36,11 @@ public class ReservationService {
 	@Qualifier("BorrowService")
 	private BorrowService borrowService;
 	
+	@Autowired
+	@Qualifier("CopyService")
+	private CopyService copyService;
+	
+	
 	public List<ReservationWithWaitingListEntity> getReservationByUserLastName(String userLastName){
 		UserEntity userEntity=userService.getUserByUserLastName(userLastName);
 		List<ReservationEntity> reservationByUserLastNameEntities=reservationRepository.getReservationByUserEntity(userEntity); 		
@@ -95,7 +100,70 @@ public class ReservationService {
 		List<ReservationEntity> reservationByBookEntities=reservationRepository.getReservationByBookEntity(bookEntity);
 		return reservationByBookEntities;
 	}
+
+	public void createReservation(String userLastName, Long bookId) {
+		ReservationEntity reservationEntity=createReservationEntityWithUserLastNameAndBookId(userLastName,bookId);
+		if(verifyRG(userLastName, bookId)) {
+			reservationRepository.save(reservationEntity);
+		}
+	}
 	
+	private ReservationEntity createReservationEntityWithUserLastNameAndBookId(String userLastName, Long bookId) {
+		ReservationEntity reservationEntity= new ReservationEntity();	
+		reservationEntity.setPosition(getTheMaximumOfPositionInReservationEntitiesDataBase()+1);
+		reservationEntity.setBookEntity(bookService.getBookById(bookId));
+		reservationEntity.setUserEntity(userService.getUserByUserLastName(userLastName));
+		return reservationEntity;
+	}
 	
+	private int getTheMaximumOfPositionInReservationEntitiesDataBase() {
+		int maxValueOfPosition=0;
+		List<ReservationEntity> reservationEntities=(List<ReservationEntity>) reservationRepository.findAll();
+		for (ReservationEntity reservationEntity:reservationEntities) {
+			if(reservationEntity.getPosition()>maxValueOfPosition) {
+				maxValueOfPosition=reservationEntity.getPosition();
+			}
+		}
+		return maxValueOfPosition;
+	}
 	
+	private Boolean verifyRG(String userLastName, Long bookId) {
+		Boolean rgVerificationIsOk=false;
+		if(!verifyBookIsBorrowedByUser(userLastName,bookId) && !verifyWaitingListIsFull(bookId) && !verifyBookIsAvailable(bookId)) {
+			rgVerificationIsOk=true;
+		}
+		return rgVerificationIsOk;
+	}
+	
+	private Boolean verifyBookIsBorrowedByUser(String userLastName, Long bookId) {
+		Boolean yetBorrowed= false;
+		List<ReservationEntity> reservationEntities=(List<ReservationEntity>) reservationRepository.findAll();
+		for(ReservationEntity reservationEntity:reservationEntities) {
+			if((reservationEntity.getBookEntity().getBookId()==bookId) && (reservationEntity.getUserEntity().getUserLastName().equals(userLastName))) {
+				yetBorrowed=true;
+			}
+		}
+		return yetBorrowed;
+	}
+	
+	private Boolean verifyWaitingListIsFull(Long bookId) {
+		Boolean waitingListIsFull=true;
+		//Récupérer le nombre de copies existantes du livre
+		int numberOfExistingCopyByBookId = copyService.getExistingCopyNumberByBookId(bookService.getBookById(bookId));
+		//Vérifier le nombre de réservation existante pour ce livre
+		int numberOfReservationByBookId = getReservationByBookId(bookId).size();
+		//Comparer le nombre de copies extistante et le nombre de réservation
+		if((2*numberOfExistingCopyByBookId)>numberOfReservationByBookId) {
+			waitingListIsFull=false;
+		}
+		return waitingListIsFull;
+	}
+	
+	private Boolean verifyBookIsAvailable(Long bookId) {
+		Boolean bookIsAvailable=true;
+		if(copyService.getCopyNumberAvailableByBookEntity(bookService.getBookById(bookId))==0) {
+			bookIsAvailable=false;
+		}
+		return bookIsAvailable;
+	}
 }

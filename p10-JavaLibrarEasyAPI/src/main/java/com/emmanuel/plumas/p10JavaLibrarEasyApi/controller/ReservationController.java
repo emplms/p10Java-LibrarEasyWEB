@@ -30,5 +30,10 @@ public class ReservationController {
 		List<ReservationEntity> reservationByBookIdEntities=reservationService.getReservationByBookId(bookId);
 		return reservationByBookIdEntities;
 	}
+	
+	@GetMapping(value="reservations/createReservation/{bookId}/{userLastName}")
+	public void createReservation(@PathVariable Long bookId, @PathVariable String userLastName) {
+		reservationService.createReservation(userLastName,bookId);
+	}
 }
 

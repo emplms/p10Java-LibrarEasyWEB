@@ -25,4 +25,9 @@ public class ReservationService {
 		List<ReservationWithWaitingListEntity> reservationWithWaitingListByUserLastNameEntities=apiProxy.getReservationByUserLastName(userLastName);
 		return reservationWithWaitingListByUserLastNameEntities;
 	}
+
+	public void createReservation(Long bookId,String userLastName) {
+		apiProxy.createReservation(bookId,userLastName);
+		
+	}
 }

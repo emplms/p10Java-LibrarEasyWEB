@@ -19,7 +19,6 @@ public class ReservationEntity implements Serializable{
 	@Id
 	@GeneratedValue
 	private long reservationId;
-	@GeneratedValue
 	private int position;
 	private Date notificationDate;
 	

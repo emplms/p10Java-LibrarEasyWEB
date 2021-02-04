@@ -41,5 +41,9 @@ public interface ApiProxy {
 	
 	@GetMapping(value="reservations/reservationsByBook/{bookId}")
 	List<ReservationEntity> getReservationByBookId(@PathVariable Long bookId);
+	
+	@GetMapping(value="reservations/createReservation/{bookId}/{userLastName}")
+	public void createReservation(@PathVariable Long bookId,@PathVariable String userLastName);
+	
 
 }
