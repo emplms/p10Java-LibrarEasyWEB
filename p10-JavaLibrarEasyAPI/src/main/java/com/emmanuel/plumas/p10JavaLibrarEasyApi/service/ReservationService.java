@@ -68,7 +68,7 @@ public class ReservationService {
 		return reservationWithWaitingListEntities;
 	}
 	
-	public int calculatePositionWaitingList(BookEntity bookEntity, int position, String userLastName) {
+	private int calculatePositionWaitingList(BookEntity bookEntity, int position, String userLastName) {
 		int positionListeAttente=1;
 		List<ReservationEntity> reservationEntities=reservationRepository.getReservationByBookEntity(bookEntity);
 		for (ReservationEntity reservationEntity : reservationEntities) {
@@ -110,15 +110,17 @@ public class ReservationService {
 	
 	private ReservationEntity createReservationEntityWithUserLastNameAndBookId(String userLastName, Long bookId) {
 		ReservationEntity reservationEntity= new ReservationEntity();	
-		reservationEntity.setPosition(getTheMaximumOfPositionInReservationEntitiesDataBase()+1);
+		reservationEntity.setPosition(getTheMaximumOfPositionInReservationEntitiesDataBase(bookId)+1);
 		reservationEntity.setBookEntity(bookService.getBookById(bookId));
 		reservationEntity.setUserEntity(userService.getUserByUserLastName(userLastName));
 		return reservationEntity;
 	}
 	
-	private int getTheMaximumOfPositionInReservationEntitiesDataBase() {
+	// Il peut y avoir des positions identiques mais sur des bookId différents
+	private int getTheMaximumOfPositionInReservationEntitiesDataBase(Long bookId) {
 		int maxValueOfPosition=0;
-		List<ReservationEntity> reservationEntities=(List<ReservationEntity>) reservationRepository.findAll();
+		BookEntity bookEntity=bookService.getBookById(bookId);
+		List<ReservationEntity> reservationEntities=(List<ReservationEntity>) reservationRepository.getReservationByBookEntity(bookEntity);
 		for (ReservationEntity reservationEntity:reservationEntities) {
 			if(reservationEntity.getPosition()>maxValueOfPosition) {
 				maxValueOfPosition=reservationEntity.getPosition();
@@ -127,19 +129,32 @@ public class ReservationService {
 		return maxValueOfPosition;
 	}
 	
+	//Centralisation de la vérification des RG avant de créer une réservation dans la BDD
 	private Boolean verifyRG(String userLastName, Long bookId) {
-		Boolean rgVerificationIsOk=false;
-		if(!verifyBookIsBorrowedByUser(userLastName,bookId) && !verifyWaitingListIsFull(bookId) && !verifyBookIsAvailable(bookId)) {
-			rgVerificationIsOk=true;
+		return (
+				!verifyBookIsReservedByUser(userLastName,bookId) &&
+				!verifyWaitingListIsFull(bookId) && 
+				!verifyBookIsAvailable(bookId)) &&
+				!verifyBookIsBorrowedByUser(userLastName,bookId);
+	}
+	
+	private Boolean verifyBookIsReservedByUser(String userLastName, Long bookId) {
+		Boolean yetReserved= false;
+		BookEntity bookEntity=bookService.getBookById(bookId);
+		List<ReservationEntity> reservationEntitiesByBookEntity=(List<ReservationEntity>) reservationRepository.getReservationByBookEntity(bookEntity);
+		for(ReservationEntity reservationEntity:reservationEntitiesByBookEntity) {
+			if(reservationEntity.getUserEntity().getUserLastName().equals(userLastName)) {
+				yetReserved=true;
+			}
 		}
-		return rgVerificationIsOk;
+		return yetReserved;
 	}
 	
 	private Boolean verifyBookIsBorrowedByUser(String userLastName, Long bookId) {
-		Boolean yetBorrowed= false;
-		List<ReservationEntity> reservationEntities=(List<ReservationEntity>) reservationRepository.findAll();
-		for(ReservationEntity reservationEntity:reservationEntities) {
-			if((reservationEntity.getBookEntity().getBookId()==bookId) && (reservationEntity.getUserEntity().getUserLastName().equals(userLastName))) {
+		Boolean yetBorrowed=false;
+		List<BorrowEntity> borrowEntitiesByBookEntity=borrowService.getBorrowByBookId(bookId);
+		for(BorrowEntity borrowEntity:borrowEntitiesByBookEntity) {
+			if(borrowEntity.getUserEntity().getUserLastName().equals(userLastName)) {
 				yetBorrowed=true;
 			}
 		}
