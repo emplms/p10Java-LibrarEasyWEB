@@ -7,6 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.CopyEntity;
 import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.BookEntityAvailable;
 import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.BorrowEntity;
 import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.ReservationEntity;
@@ -47,4 +48,7 @@ public interface ApiProxy {
 	
 	@GetMapping(value="deleteReservation/{reservationId}")
 	public void deleteReservation(@PathVariable Long reservationId);
+	
+	@GetMapping(value="copies")
+	public List<CopyEntity> getAllCopies();
 }

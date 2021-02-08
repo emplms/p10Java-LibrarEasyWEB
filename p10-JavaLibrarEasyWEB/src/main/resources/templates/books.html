@@ -66,7 +66,7 @@
 				       			<th>Nombre d'exemplaires disponibles</th>
 			        			<th>Date du prochain retour</th>
 			        			<th>Nombre de réservations</th>
-			        			<th>Réservation*</th>
+			        			<th>Réservation</th>
 			    			</tr>
 		    			</thead>
 		    			<tbody>
@@ -89,13 +89,12 @@
 						        	<a th:unless="${book.availableCopyNumber==0}">Sans objet</a>
 						        </td>
 						        <td>
-						        	<a th:if="${book.availableCopyNumber==0}"th:href="@{http://localhost:8080/reservations/createReservation/{bookId}(bookId=${book.bookId})}">Réserver l'ouvrage</a>
-						        	<a th:unless="${book.availableCopyNumber==0}" >Réservation impossible</a>
+						        	<a th:if="${book.isReservable && book.availableCopyNumber==0}" th:href="@{http://localhost:8080/reservations/createReservation/{bookId}(bookId=${book.reservableBookId})}">Réserver l'ouvrage</a>
+						        	<a th:unless="${book.isReservable && book.availableCopyNumber==0}">Réservation impossible</a>	
 						        </td>
 						    </tr>
 						 </tbody>   
 			    	</table>
-			    	<div>* La réservation d'un ouvrage non disponible ne reste possible que si la file d'attente de réservation n'est pas pleine et qu'une réservation n'est pas ouverte à votre nom pour l'ouvrage en question</div>
 			    </div>	
 			</div>
 		</div>

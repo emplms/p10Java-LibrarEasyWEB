@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.BookEntity;
-import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.BookEntityAvailable;
+import com.emmanuel.plumas.p10JavaLibrarEasyWEB.model.ReservableBook;
 import com.emmanuel.plumas.p10JavaLibrarEasyWEB.services.BookService;
 
 @Controller
@@ -17,7 +17,7 @@ public class BookController extends CommonController{
 
 	@Autowired
 	private BookService bookService;
-	
+
 	
 	@ModelAttribute("bookForm")
 	public BookEntity setBookEntity() {
@@ -26,7 +26,8 @@ public class BookController extends CommonController{
 	
 	@GetMapping(value="/books")
 	public String getBooks(Model model) {	
-		List<BookEntityAvailable> bookEntities=bookService.getAllBooks();
+		String userLastName=getPrincipal();
+		List<ReservableBook> bookEntities=bookService.getAllBooks(userLastName);
 		model.addAttribute("bookEntities", bookEntities);
 		return "books";
 	}
@@ -38,8 +39,9 @@ public class BookController extends CommonController{
 	
 	@PostMapping(value="/bookByTitleSearch")
 	public String getBookByTitle(Model model, @ModelAttribute("bookForm") BookEntity bookEntity) {
-		List<BookEntityAvailable> bookByTitleResult=bookService.getBookByTitle(bookEntity);
-		model.addAttribute("booksList", bookByTitleResult);
+		String userLastName=getPrincipal();
+		List<ReservableBook> booksByTitleResult=bookService.getBookByTitle(bookEntity, userLastName);
+		model.addAttribute("booksByTitleResult",booksByTitleResult);
 		return "bookByTitleResult";
 	}
 }
