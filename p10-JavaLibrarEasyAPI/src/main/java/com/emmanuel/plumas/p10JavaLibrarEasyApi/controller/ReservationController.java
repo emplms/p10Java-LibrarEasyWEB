@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.emmanuel.plumas.p10JavaLibrarEasyApi.model.ReservationEntity;
@@ -18,6 +20,11 @@ public class ReservationController {
 	@Autowired
 	@Qualifier("ReservationService")
 	private ReservationService reservationService;
+	
+	@GetMapping(value="reservations")
+	List<ReservationEntity> getAllReservations(){
+		return reservationService.getAllReservations();
+	}
 	
 	@GetMapping(value="reservations/reservationsByUser/{userLastName}")
 	List<ReservationWithWaitingListEntity> getReservationByUserLastName(@PathVariable String userLastName){
@@ -39,6 +46,11 @@ public class ReservationController {
 	@GetMapping(value="deleteReservation/{reservationId}")
 	public void deleteReservation(@PathVariable Long reservationId) {
 		reservationService.deleteReservation(reservationId);
+	}
+	
+	@PostMapping(value="reservation/update")
+	public void upDateReservation(@RequestBody ReservationEntity reservationEntity) {
+		reservationEntity=reservationService.upDateReservationEntity(reservationEntity);
 	}
 }
 

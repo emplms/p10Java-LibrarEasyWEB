@@ -186,4 +186,18 @@ public class ReservationService {
 		reservationRepository.deleteById(reservationId);;
 		
 	}
+
+	public List<ReservationEntity> getAllReservations() {
+		return (List<ReservationEntity>) reservationRepository.findAll();
+	}
+	
+	public ReservationEntity upDateReservationEntity(ReservationEntity reservationEntity) {
+		ReservationEntity reservation=reservationRepository.getReservationByReservationId(reservationEntity.getReservationId());
+		reservation.setPosition(reservationEntity.getPosition());
+		reservation.setNotificationDate(reservationEntity.getNotificationDate());
+		reservation.setBookEntity(reservationEntity.getBookEntity());
+		reservation.setUserEntity(reservationEntity.getUserEntity());
+		reservationRepository.save(reservation);
+		return reservation;
+		}
 }
