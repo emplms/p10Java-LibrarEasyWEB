@@ -2,6 +2,8 @@ package com.emmanuel.plumas.p10JavaLibrarEasyApi.controller;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +45,7 @@ public class ReservationController {
 		reservationService.createReservation(userLastName,bookId);
 	}
 	
+	@Transactional 
 	@GetMapping(value="deleteReservation/{reservationId}")
 	public void deleteReservation(@PathVariable Long reservationId) {
 		reservationService.deleteReservation(reservationId);

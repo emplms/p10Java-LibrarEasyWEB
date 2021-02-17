@@ -34,10 +34,8 @@ public interface ApiProxy{
 	List<BookEntityAvailable> getAllBooks();
 	
 	@PostMapping(value="reservation/update")
-	public void upDateReservation(@RequestBody ReservationEntity reservationEntity);
+	public void upDateReservation(@RequestBody ReservationEntity reservationEntity); 
 	
 	@GetMapping(value="deleteReservation/{reservationId}")
 	public void deleteReservation(@PathVariable Long reservationId);
-	
-	
 }

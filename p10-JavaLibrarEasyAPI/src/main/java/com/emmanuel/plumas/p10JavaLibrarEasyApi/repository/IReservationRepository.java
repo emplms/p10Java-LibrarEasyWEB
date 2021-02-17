@@ -19,4 +19,6 @@ public interface IReservationRepository extends CrudRepository<ReservationEntity
 	List<ReservationEntity> getReservationByBookEntity(BookEntity bookEntity);
 
 	ReservationEntity getReservationByReservationId(long reservationId);
+	
+	void deleteByReservationId(long reservationId);
 }
