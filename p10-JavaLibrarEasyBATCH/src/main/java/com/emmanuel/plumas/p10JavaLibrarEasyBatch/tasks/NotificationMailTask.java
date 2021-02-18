@@ -64,6 +64,7 @@ public class NotificationMailTask {
 					if(prioritaryReservationEntity.getNotificationDate().before(calendar.getTime())) {
 						apiProxy.deleteReservation(prioritaryReservationEntity.getReservationId());
 						numberOfReservationForTheBook--;
+						reservationEntities.remove(prioritaryReservationEntity);
 					}else {
 						reservationNotificationForTheBookIsSended=true;
 					}
