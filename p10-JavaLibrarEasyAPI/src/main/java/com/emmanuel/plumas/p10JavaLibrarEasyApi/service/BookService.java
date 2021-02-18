@@ -5,12 +5,15 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.emmanuel.plumas.p10JavaLibrarEasyApi.model.BookEntity;
 import com.emmanuel.plumas.p10JavaLibrarEasyApi.model.BookEntityAvailable;
+import com.emmanuel.plumas.p10JavaLibrarEasyApi.model.ReservationWithWaitingListEntity;
 import com.emmanuel.plumas.p10JavaLibrarEasyApi.repository.IBookRepository;
 
 @Service
@@ -30,14 +33,19 @@ public class BookService {
 	@Qualifier("BorrowService")
 	private BorrowService borrowService;
 	
+	@Autowired
+	@Qualifier("ReservationService")
+	private ReservationService reservationService;
+	
 	public BookEntity getBookById(Long bookId) {
 		BookEntity bookEntity=bookRepository.findByBookId(bookId);
 		return bookEntity;
 	}
 	
-	public List<BookEntity> getAllBooks(){
+	public List<BookEntityAvailable> getAllBooks(){
 		List<BookEntity> bookEntities=(List<BookEntity>) bookRepository.findAll();
-		return bookEntities;
+		List<BookEntityAvailable> bookEntitiesAvailable= transformBookEntityToAvailable(bookEntities);
+		return bookEntitiesAvailable;
 	}
 
 	public List<BookEntityAvailable> getsBookByTitleAvalaibale(String bookTitle) {
@@ -74,6 +82,14 @@ public class BookService {
 			bookEntityAvailable.setEditor(bookEntity.getEditor());
 			bookEntityAvailable.setBookType(bookEntity.getBookType());
 			bookEntityAvailable.setAuthorEntity(bookEntity.getAuthorEntity());
+			//Récupérér les ReservationEntity et les Transformer en reservation avec liste d'attente
+			Date dateNextReturn=reservationService.calculateNextReturnDate(bookEntity.getBookId());
+
+			List<ReservationWithWaitingListEntity> reservationWithWaitingListEntities=reservationService.transformReservationEntitiesToReservationWithWaitingListEntities(bookEntity.getReservationEntities(),dateNextReturn);
+			
+			//Mettre à jour la list de le bookEntityAvalaible
+			bookEntityAvailable.setReservationWithWaitingListEntities(reservationWithWaitingListEntities);
+
 			bookEntityAvailable.setAvailableCopyNumber(copyService.getCopyNumberAvailableByBookEntity(bookEntity));
 			bookEntitiesAvailable.add(bookEntityAvailable);
 			}

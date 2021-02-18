@@ -10,6 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import com.emmanuel.plumas.p10JavaLibrarEasyBatch.tasks.NotificationMailTask;
 import com.emmanuel.plumas.p10JavaLibrarEasyBatch.tasks.RelanceMailTask;
 
 @EnableScheduling
@@ -20,6 +21,10 @@ public class P10JavaLibrarEasyBatchApplication {
 	@Autowired
 	@Qualifier("relanceMailTask")
 	private RelanceMailTask relanceMailTask;
+	
+	@Autowired
+	@Qualifier("notificationMailTask")
+	private NotificationMailTask notificationMailTask;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(P10JavaLibrarEasyBatchApplication.class, args);
@@ -34,6 +39,10 @@ public class P10JavaLibrarEasyBatchApplication {
 	public void run() throws MessagingException  {
 		System.out.println("lancement du batch");
 		relanceMailTask.execute();
+		notificationMailTask.execute();
 	}
+	
+	
+	
 
 }

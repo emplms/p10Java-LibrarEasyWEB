@@ -47,59 +47,49 @@
 				</div>
 			</div>
 			
-			<!-- Contenu de la page -->
-			<div class="row">
-				<div class="col text-info">
-					<h2>Liste des livres</h2>
-				</div>
-			</div>
 			<div class="row">
 				<div class="col">
-					<table class="table table-hover table-sm table-bordered">
-			      		<thead >
-				      		<tr class="table-info text-info">
-				       			<th>Titre</th>
-				       			<th>Nom de l'auteur</th>
-				       			<th>Prénom de l'auteur</th>
-				       			<th>Type</th>
-				       			<th>Editeur</th>
-				       			<th>Nombre d'exemplaires disponibles</th>
-			        			<th>Date du prochain retour</th>
-			        			<th>Nombre de réservations</th>
-			        			<th>Réservation</th>
-			    			</tr>
-		    			</thead>
-		    			<tbody>
-			    			<tr th:each="book : ${bookEntities}">
-						        <td th:text="${book.bookTitle}"></td>
-						        <td th:text="${book.authorEntity.authorLastName}"></td>
-						        <td th:text="${book.authorEntity.authorFirstName}"></td>
-						        <td th:text="${book.bookType}"></td>
-						        <td th:text="${book.editor}"></td>
-						        <td>								 						       
-						        	<a th:if="${book.availableCopyNumber==0}">Non Disponible</a>
-						        	<a th:unless="${book.availableCopyNumber==0}" th:text="${book.availableCopyNumber}"></a>
-						        </td>
-						        <td>								 						       
-						        	<a th:if="${book.availableCopyNumber==0}" th:text="${#dates.format(book.reservationWithWaitingListEntities[0].dateNextReturn,'dd-MM-yyyy')}"></a>
-						        	<a th:unless="${book.availableCopyNumber==0}">Sans objet</a>
-						        </td>
-						        <td>								 						       
-						        	<a th:if="${book.availableCopyNumber==0}" th:text="${#lists.size(book.reservationWithWaitingListEntities)}"></a>
-						        	<a th:unless="${book.availableCopyNumber==0}">Sans objet</a>
-						        </td>
-						        <td>
-						        	<a th:if="${book.isReservable && book.availableCopyNumber==0}" th:href="@{http://localhost:8080/reservations/createReservation/{bookId}(bookId=${book.reservableBookId})}">Réserver l'ouvrage</a>
-						        	<a th:unless="${book.isReservable && book.availableCopyNumber==0}">Réservation impossible</a>	
-						        </td>
-						    </tr>
-						 </tbody>   
-			    	</table>
-			    </div>	
+					<p th:text="'Vous êtes connecté en tant que : '+${principal}"></p>
+				</div>
 			</div>
+			
+			<div class="row">
+				<div class="col text-info">
+					<h2>Liste des réservations en cours</h2>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col">
+					<div th:if="${#lists.isEmpty(reservationByUserLastNameEntities)}">Vous n'avez aucune réservation en cours</div>
+		   			<div th:unless="${#lists.isEmpty(reservationByUserLastNameEntities)}">		
+						<table class="table table-hover table-sm table-bordered">
+			      			<thead>
+				      			<tr class="table-info text-info">
+				        			<th>Titre</th>
+				        			<th>Nom de l'Auteur</th>
+				        			<th>Prénom de l'auteur</th>
+				        			<th>Prochaine date de retour</th>
+				        			<th>Votre position dans la liste d'attente</th>
+				        			<th>Suppression de réservation</th>
+				     			</tr>
+			     			</thead>
+			     			<tbody>
+							    <tr th:each="reservation:${reservationByUserLastNameEntities}">
+							        <td th:text="${reservation.bookEntity.bookTitle }"></td>
+							        <td th:text="${reservation.bookEntity.authorEntity.authorLastName}"></td>
+							        <td th:text="${reservation.bookEntity.authorEntity.authorFirstName}"></td>
+							        <td th:text="${#dates.format(reservation.dateNextReturn,'dd-MM-yyyy')}"></td>
+							        <td th:text="${reservation.positionWaitingList}"></td>
+							        <td><a th:href="@{http://localhost:8080/deleteReservation/{reservationId}(reservationId=${reservation.reservationId})}">supprimer la réservation</a></td>
+							     </tr>
+						     </tbody>
+			    		</table>
+			    	</div>	
+		    	</div>
+		    </div>	
+		    
 		</div>
-	
-	
 		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>	

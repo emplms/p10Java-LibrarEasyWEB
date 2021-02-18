@@ -1,27 +1,28 @@
-package com.emmanuel.plumas.p10JavaLibrarEasyApi.model;
+package com.emmanuel.plumas.p10JavaLibrarEasyWEB.model;
 
 import java.util.List;
 
-public class BookEntityAvailable {
-	private Long bookId;
+public class ReservableBook {
+
+	private Long reservableBookId;
 	private String bookTitle;
 	private String editor;
 	private String bookType;
 	private AuthorEntity authorEntity;
 	private List<ReservationWithWaitingListEntity> reservationWithWaitingListEntities;
 	private int availableCopyNumber;
+	private Boolean isReservable;
 	
-	
-	public BookEntityAvailable() {
+	public ReservableBook() {
 		super();
 	}
 
-	public Long getBookId() {
-		return bookId;
+	public Long getReservableBookId() {
+		return reservableBookId;
 	}
 
-	public void setBookId(Long bookId) {
-		this.bookId = bookId;
+	public void setReservableBookId(Long reservableBookId) {
+		this.reservableBookId = reservableBookId;
 	}
 
 	public String getBookTitle() {
@@ -56,8 +57,6 @@ public class BookEntityAvailable {
 		this.authorEntity = authorEntity;
 	}
 
-	
-
 	public List<ReservationWithWaitingListEntity> getReservationWithWaitingListEntities() {
 		return reservationWithWaitingListEntities;
 	}
@@ -75,10 +74,23 @@ public class BookEntityAvailable {
 		this.availableCopyNumber = availableCopyNumber;
 	}
 
+	public Boolean getIsReservable() {
+		return isReservable;
+	}
+
+	public void setIsReservable(Boolean isReservable) {
+		this.isReservable = isReservable;
+	}
+
 	@Override
 	public String toString() {
-		return "BookEntityAvailable [bookId=" + bookId + ", bookTitle=" + bookTitle + ", editor=" + editor
-				+ ", bookType=" + bookType + ", authorEntity=" + authorEntity + ", reservationWithWaitingListEntities="
-				+ reservationWithWaitingListEntities + ", availableCopyNumber=" + availableCopyNumber + "]";
-	}	
+		return "ReservableBook [reservableBookId=" + reservableBookId + ", bookTitle=" + bookTitle + ", editor="
+				+ editor + ", bookType=" + bookType + ", authorEntity=" + authorEntity
+				+ ", reservationWithWaitingListEntities=" + reservationWithWaitingListEntities
+				+ ", availableCopyNumber=" + availableCopyNumber + ", isReservable=" + isReservable + "]";
+	}
+	
+	
+	
+	
 }
