@@ -25,7 +25,9 @@ Pour cloner les composants du projet :
 # DEPLOIEMENT
 ##### BDD (postgresql)
 1- Télécharger PostgreSQL  
-2- Executer les scripts sql (dossier p10JavaLibrarEasy-Api/src/main/ressources/doc)  
+2- Executer les scripts sql (dossier p10JavaLibrarEasy-Api/src/main/ressources/doc)
+Les scripts "p7" correspondent aux scripts de la release 1.0.0
+Les scripts "p10" correspondent aux scripts de migration pour la release 1.1.0
 
 ##### paramètres de connection à la Base de Données
 Le user et le mot de passe de connection à la base de données par défaut sont renseignés dans le fichier application.properties  
@@ -51,4 +53,4 @@ Le batch a une fréquence de lancement de 24H00 à partir du lancement de celui-
 1.1.0-Snapshot
 
 # AUTEUR
-Emmanuel PLUMAS - Février 2021
+Emmanuel PLUMAS - Mars 2021
