@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name="reservation")
 public class ReservationEntity implements Serializable{
@@ -24,6 +26,7 @@ public class ReservationEntity implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name="book_id")
+	@JsonIgnoreProperties("reservationEntities")
 	private BookEntity bookEntity;
 	
 	@ManyToOne

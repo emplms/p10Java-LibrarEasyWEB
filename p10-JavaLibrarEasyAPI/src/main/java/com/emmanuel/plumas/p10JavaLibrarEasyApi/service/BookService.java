@@ -83,7 +83,7 @@ public class BookService {
 			bookEntityAvailable.setBookType(bookEntity.getBookType());
 			bookEntityAvailable.setAuthorEntity(bookEntity.getAuthorEntity());
 			//Récupérér les ReservationEntity et les Transformer en reservation avec liste d'attente
-			Date dateNextReturn=reservationService.calculateNextReturnDate(bookEntity.getBookId());
+			Date dateNextReturn=reservationService.calculateNextReturnDate(borrowService.getBorrowByBookId(bookEntity.getBookId()));
 
 			List<ReservationWithWaitingListEntity> reservationWithWaitingListEntities=reservationService.transformReservationEntitiesToReservationWithWaitingListEntities(bookEntity.getReservationEntities(),dateNextReturn);
 			

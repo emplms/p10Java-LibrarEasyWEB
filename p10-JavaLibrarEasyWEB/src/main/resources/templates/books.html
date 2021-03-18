@@ -77,16 +77,18 @@
 						        <td th:text="${book.bookType}"></td>
 						        <td th:text="${book.editor}"></td>
 						        <td>								 						       
-						        	<a th:if="${book.availableCopyNumber==0}">Non Disponible</a>
+						        	<a th:if="${book.availableCopyNumber==0}">0</a>
 						        	<a th:unless="${book.availableCopyNumber==0}" th:text="${book.availableCopyNumber}"></a>
 						        </td>
 						        <td>								 						       
-						        	<a th:if="${book.availableCopyNumber==0}" th:text="${#dates.format(book.reservationWithWaitingListEntities[0].dateNextReturn,'dd-MM-yyyy')}"></a>
-						        	<a th:unless="${book.availableCopyNumber==0}">Sans objet</a>
+						        	<a th:if="${not #lists.isEmpty(book.reservationWithWaitingListEntities) && book.availableCopyNumber==0}" th:text="${#dates.format(book.reservationWithWaitingListEntities[0].dateNextReturn,'dd-MM-yyyy')}"></a>
+						        	<a th:if="${book.availableCopyNumber==0 && #lists.isEmpty(book.reservationWithWaitingListEntities)}">Titre indisponible</a>
+						        	<a th:if="${book.availableCopyNumber!=0}">Exemplaire(s) disponible(s)</a>
 						        </td>
 						        <td>								 						       
-						        	<a th:if="${book.availableCopyNumber==0}" th:text="${#lists.size(book.reservationWithWaitingListEntities)}"></a>
-						        	<a th:unless="${book.availableCopyNumber==0}">Sans objet</a>
+						        	<a th:if="${not #lists.isEmpty(book.reservationWithWaitingListEntities) && book.availableCopyNumber==0}" th:text="${#lists.size(book.reservationWithWaitingListEntities)}"></a>
+						        	<a th:if="${book.availableCopyNumber==0 && #lists.isEmpty(book.reservationWithWaitingListEntities)}">Titre indisponible</a>
+						        	<a th:if="${book.availableCopyNumber!=0}">Exemplaire(s) disponible(s)</a>
 						        </td>
 						        <td>
 						        	<a th:if="${book.isReservable && book.availableCopyNumber==0}" th:href="@{http://localhost:8080/reservations/createReservation/{bookId}(bookId=${book.reservableBookId})}">Réserver l'ouvrage</a>

@@ -26,6 +26,11 @@ public class BorrowService {
 	private IBorrowRepository borrowRepository;
 	
 	
+	public void setBorrowRepository(IBorrowRepository borrowRepository) {
+		this.borrowRepository = borrowRepository;
+	}
+
+
 	@Autowired
 	@Qualifier("UserService")
 	private UserService userService;
@@ -48,6 +53,7 @@ public class BorrowService {
 		cal.setTime(borrowEntity.getStartDate());
 		cal.add(Calendar.MONTH, 1);
 		Date today=new Date();
+		//Le prêt doit toujours être en cours
 		if (cal.getTime().after(today)) { 
 			cal.setTime(borrowEntity.getEndDate());
 			cal.add(Calendar.MONTH, 1);

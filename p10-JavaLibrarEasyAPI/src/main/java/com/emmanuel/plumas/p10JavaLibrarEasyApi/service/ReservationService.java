@@ -1,4 +1,4 @@
-package com.emmanuel.plumas.p10JavaLibrarEasyApi.service;
+	package com.emmanuel.plumas.p10JavaLibrarEasyApi.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,14 +40,25 @@ public class ReservationService {
 	@Qualifier("CopyService")
 	private CopyService copyService;
 	
+	//Ajouter pour les tests
+	public void setReservationRepository(IReservationRepository reservationRepository) {
+		this.reservationRepository = reservationRepository;
+	}
 	
+	//Ajouter pour les tests
+	public void setBorrowService(BorrowService borrowService) {
+		this.borrowService = borrowService;
+	}
+
+
+
 	public List<ReservationWithWaitingListEntity> getReservationByUserLastName(String userLastName){
 		UserEntity userEntity=userService.getUserByUserLastName(userLastName);
 		List<ReservationEntity> reservationByUserLastNameEntities=reservationRepository.getReservationByUserEntity(userEntity); 		
 		List<ReservationWithWaitingListEntity> reservationWithWaitingListByUserLastNameEntities=transformReservationEntitiesToReservationWithWaitingListEntities(reservationByUserLastNameEntities,null);
 		for(ReservationWithWaitingListEntity reservationWithWaitingListEntity:reservationWithWaitingListByUserLastNameEntities) {
-			reservationWithWaitingListEntity.setPositionWaitingList(calculatePositionWaitingList(reservationWithWaitingListEntity.getBookEntity(),reservationWithWaitingListEntity.getPosition(),userLastName));
-			reservationWithWaitingListEntity.setDateNextReturn((calculateNextReturnDate(reservationWithWaitingListEntity.getBookEntity().getBookId())));
+			reservationWithWaitingListEntity.setPositionWaitingList(calculatePositionWaitingList(reservationRepository.getReservationByBookEntity(reservationWithWaitingListEntity.getBookEntity()),reservationWithWaitingListEntity));
+			reservationWithWaitingListEntity.setDateNextReturn((calculateNextReturnDate(borrowService.getBorrowByBookId(reservationWithWaitingListEntity.getBookEntity().getBookId()))));
 		}
 		return reservationWithWaitingListByUserLastNameEntities;
 	}
@@ -68,12 +79,11 @@ public class ReservationService {
 		return reservationWithWaitingListEntities;
 	}
 	
-	private int calculatePositionWaitingList(BookEntity bookEntity, int position, String userLastName) {
+	public int calculatePositionWaitingList(List<ReservationEntity> reservationEntities, ReservationWithWaitingListEntity reservationWithWaitingListEntity) {
 		int positionListeAttente=1;
-		List<ReservationEntity> reservationEntities=reservationRepository.getReservationByBookEntity(bookEntity);
 		for (ReservationEntity reservationEntity : reservationEntities) {
-			if(!(reservationEntity.getUserEntity().getUserLastName().equals(userLastName))){
-				if(position>reservationEntity.getPosition()) {
+			if(!(reservationEntity.getUserEntity().getUserLastName().equals(reservationWithWaitingListEntity.getUserEntity().getUserLastName()))){
+				if(reservationWithWaitingListEntity.getPosition()>reservationEntity.getPosition()) {
 					positionListeAttente=positionListeAttente+1;
 				}
 			}
@@ -82,12 +92,11 @@ public class ReservationService {
 	}
 	
 	
-	public Date calculateNextReturnDate(Long bookId) {	
+	public Date calculateNextReturnDate(List<BorrowEntity> borrowEntitiesByBookId) {	
 		Calendar cal=Calendar.getInstance();
 		cal.add(Calendar.MONTH, 1);
 		Date dateProchainRetour = cal.getTime();
-		List<BorrowEntity> borrowEntities=borrowService.getBorrowByBookId(bookId);
-		for (BorrowEntity borrowEntity : borrowEntities) {
+		for (BorrowEntity borrowEntity : borrowEntitiesByBookId) {
 			if(borrowEntity.getEndDate().before(dateProchainRetour)) {
 				dateProchainRetour=borrowEntity.getEndDate();
 			}
@@ -103,7 +112,8 @@ public class ReservationService {
 
 	public void createReservation(String userLastName, Long bookId) {
 		ReservationEntity reservationEntity=createReservationEntityWithUserLastNameAndBookId(userLastName,bookId);
-		if(verifyRG(userLastName, bookId)) {
+		BookEntity bookEntity=bookService.getBookById(bookId);
+		if(verifyRG(userLastName, bookEntity)) {
 			reservationRepository.save(reservationEntity);
 		}
 	}
@@ -130,17 +140,16 @@ public class ReservationService {
 	}
 	
 	//Centralisation de la vérification des RG avant de créer une réservation dans la BDD
-	private Boolean verifyRG(String userLastName, Long bookId) {
+	private Boolean verifyRG(String userLastName, BookEntity bookEntity) {
 		return (
-				!verifyBookIsReservedByUser(userLastName,bookId) &&
-				!verifyWaitingListIsFull(bookId) && 
-				!verifyBookIsAvailable(bookId)) &&
-				!verifyBookIsBorrowedByUser(userLastName,bookId);
+				!verifyBookIsReservedByUser(userLastName,bookEntity) &&
+				!verifyWaitingListIsFull(bookEntity) && 
+				!verifyBookIsAvailable(bookEntity)) &&
+				!verifyBookIsBorrowedByUser(userLastName,bookEntity);
 	}
 	
-	private Boolean verifyBookIsReservedByUser(String userLastName, Long bookId) {
+	public Boolean verifyBookIsReservedByUser(String userLastName, BookEntity bookEntity) {
 		Boolean yetReserved= false;
-		BookEntity bookEntity=bookService.getBookById(bookId);
 		List<ReservationEntity> reservationEntitiesByBookEntity=(List<ReservationEntity>) reservationRepository.getReservationByBookEntity(bookEntity);
 		for(ReservationEntity reservationEntity:reservationEntitiesByBookEntity) {
 			if(reservationEntity.getUserEntity().getUserLastName().equals(userLastName)) {
@@ -150,9 +159,9 @@ public class ReservationService {
 		return yetReserved;
 	}
 	
-	private Boolean verifyBookIsBorrowedByUser(String userLastName, Long bookId) {
+	public Boolean verifyBookIsBorrowedByUser(String userLastName, BookEntity bookEntity) {
 		Boolean yetBorrowed=false;
-		List<BorrowEntity> borrowEntitiesByBookEntity=borrowService.getBorrowByBookId(bookId);
+		List<BorrowEntity> borrowEntitiesByBookEntity=borrowService.getBorrowByBookId(bookEntity.getBookId());
 		for(BorrowEntity borrowEntity:borrowEntitiesByBookEntity) {
 			if(borrowEntity.getUserEntity().getUserLastName().equals(userLastName)) {
 				yetBorrowed=true;
@@ -161,12 +170,12 @@ public class ReservationService {
 		return yetBorrowed;
 	}
 	
-	private Boolean verifyWaitingListIsFull(Long bookId) {
+	private Boolean verifyWaitingListIsFull(BookEntity bookEntity) {
 		Boolean waitingListIsFull=true;
 		//Récupérer le nombre de copies existantes du livre
-		int numberOfExistingCopyByBookId = copyService.getExistingCopyNumberByBookId(bookService.getBookById(bookId));
+		int numberOfExistingCopyByBookId = copyService.getExistingCopyNumberByBookId(bookService.getBookById(bookEntity.getBookId()));
 		//Vérifier le nombre de réservation existante pour ce livre
-		int numberOfReservationByBookId = getReservationByBookId(bookId).size();
+		int numberOfReservationByBookId = getReservationByBookId(bookEntity.getBookId()).size();
 		//Comparer le nombre de copies extistante et le nombre de réservation
 		if((2*numberOfExistingCopyByBookId)>numberOfReservationByBookId) {
 			waitingListIsFull=false;
@@ -174,9 +183,9 @@ public class ReservationService {
 		return waitingListIsFull;
 	}
 	
-	private Boolean verifyBookIsAvailable(Long bookId) {
+	private Boolean verifyBookIsAvailable(BookEntity bookEntity) {
 		Boolean bookIsAvailable=true;
-		if(copyService.getCopyNumberAvailableByBookEntity(bookService.getBookById(bookId))==0) {
+		if(copyService.getCopyNumberAvailableByBookEntity(bookService.getBookById(bookEntity.getBookId()))==0) {
 			bookIsAvailable=false;
 		}
 		return bookIsAvailable;

@@ -8,6 +8,7 @@ class P10JavaLibrarEasyApiApplicationTests {
 
 	@Test
 	void contextLoads() {
+		
 	}
 
 }
